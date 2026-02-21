@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { WorkflowDiagram } from "./components/WorkflowDiagram";
 import { MetricsCard } from "./components/MetricsCard";
 
-const ease = [0.22, 1, 0.36, 1];
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function Home() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
