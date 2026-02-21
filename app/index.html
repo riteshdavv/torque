@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TORQUE — We Power Your Operations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ─── RESET ─── */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ─── TOKENS ─── */
+        :root {
+            --cream: #f0ede6;
+            --cream-d: #e8e4da;
+            --black: #0f0f0f;
+            --black-s: #1a1a1a;
+            --orange: #FF6B35;
+            --orange-d: #d94f1a;
+            --gray: #888880;
+            --border: #1a1a1a;
+            --max: 1200px;
+            --mono: 'IBM Plex Mono', 'Share Tech Mono', monospace;
+            --sans: 'IBM Plex Sans', system-ui, sans-serif;
+            --display: 'Bebas Neue', 'IBM Plex Mono', monospace;
+        }
+
+        /* ─── BASE ─── */
+        body {
+            background: var(--cream);
+            color: var(--black);
+            font-family: var(--sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* paper texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            opacity: 0.045;
+            mix-blend-mode: multiply;
+        }
+
+        /* ─── LAYOUT ─── */
+        .wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 48px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ─── SECTION MARKERS ─── */
+        .sec-marker {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 10px 48px;
+            border-top: 1px solid var(--black);
+            border-bottom: 1px solid var(--black);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gray);
+            position: relative;
+            z-index: 2;
+        }
+
+        .sec-marker-label {
+            flex: 0 0 auto;
+        }
+
+        .sec-marker-line {
+            flex: 1;
+            height: 1px;
+            background: repeating-linear-gradient(90deg, var(--gray) 0, var(--gray) 4px, transparent 4px, transparent 8px);
+            margin: 0 20px;
+            opacity: .4;
+        }
+
+        .sec-marker-num {
+            flex: 0 0 auto;
+            color: var(--orange);
+            font-weight: 700;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--cream);
+            border-bottom: 1px solid var(--black);
+            height: 52px;
+        }
+
+        .nav-wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 48px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--orange);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gray);
+            text-decoration: none;
+            transition: color .15s;
+        }
+
+        .nav-links a:hover {
+            color: var(--black);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link-sm {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: var(--gray);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color .15s;
+        }
+
+        .nav-link-sm:hover {
+            color: var(--black);
+        }
+
+        .btn-nav {
+            background: var(--black);
+            color: var(--cream);
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: none;
+            padding: 8px 16px;
+            cursor: crosshair;
+            transition: background .15s;
+        }
+
+        .btn-nav:hover {
+            background: var(--orange);
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 13px 28px;
+            border: 2px solid var(--black);
+            cursor: crosshair;
+            transition: all .15s;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: var(--black);
+            border-color: var(--black);
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-d);
+            color: var(--cream);
+        }
+
+        .btn-secondary {
+            background: var(--black);
+            color: var(--cream);
+        }
+
+        .btn-secondary:hover {
+            background: var(--orange);
+            color: var(--black);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--black);
+        }
+
+        .btn-ghost:hover {
+            background: var(--black);
+            color: var(--cream);
+        }
+
+        /* ─── HERO ─── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 48px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-display {
+            font-family: var(--display);
+            font-size: clamp(80px, 14vw, 180px);
+            line-height: .92;
+            letter-spacing: .02em;
+            color: var(--black);
+            margin-bottom: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-display span {
+            color: var(--orange);
+        }
+
+        /* circuit node diagram */
+        .circuit-wrap {
+            position: relative;
+            width: 520px;
+            height: 90px;
+            margin: 20px auto;
+            z-index: 2;
+        }
+
+        .circuit-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .circuit-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--black);
+            background: var(--cream-d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            animation: spin 8s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .circuit-node {
+            position: absolute;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .06em;
+            color: var(--black);
+            border: 1px solid var(--black);
+            background: var(--cream);
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+
+        .cn-ingest {
+            top: 10%;
+            left: 2%;
+        }
+
+        .cn-process {
+            top: 55%;
+            left: 5%;
+        }
+
+        .cn-version {
+            top: 78%;
+            left: 15%;
+        }
+
+        .cn-deploy {
+            top: 10%;
+            right: 5%;
+        }
+
+        .cn-route {
+            top: 55%;
+            right: 5%;
+        }
+
+        .cn-observe {
+            top: 78%;
+            right: 14%;
+        }
+
+        .hero-display-2 {
+            font-family: var(--display);
+            font-size: clamp(80px, 14vw, 180px);
+            line-height: .92;
+            letter-spacing: .02em;
+            color: var(--black);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-sub-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 32px 0 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-sub-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .hero-sub {
+            font-family: var(--sans);
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--black-s);
+            max-width: 380px;
+            opacity: .75;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        /* ─── STATS PANEL ─── */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            border-top: 2px solid var(--black);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-box {
+            padding: 24px 28px;
+            border-right: 1px solid var(--black);
+        }
+
+        .stat-box:last-child {
+            border-right: none;
+        }
+
+        .stat-val {
+            font-family: var(--display);
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1;
+            color: var(--black);
+            margin-bottom: 4px;
+        }
+
+        .stat-val span {
+            color: var(--orange);
+        }
+
+        .stat-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        /* ─── TERMINAL SECTION ─── */
+        .terminal-section {
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 2px solid var(--black);
+            min-height: 360px;
+        }
+
+        .terminal-block {
+            border-right: 1px solid var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-block:last-child {
+            border-right: none;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--black);
+            background: var(--black);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .terminal-title {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .terminal-dim {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--gray);
+        }
+
+        .terminal-body {
+            background: var(--black);
+            color: #e8e8e8;
+            font-family: var(--mono);
+            font-size: 12px;
+            line-height: 1.8;
+            padding: 20px;
+            min-height: 200px;
+            overflow: hidden;
+        }
+
+        .t-line {
+            display: flex;
+            gap: 8px;
+        }
+
+        .t-prompt {
+            color: var(--orange);
+        }
+
+        .t-ok {
+            color: #4ade80;
+        }
+
+        .t-warn {
+            color: #fbbf24;
+        }
+
+        .t-comment {
+            color: #555;
+        }
+
+        .t-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--orange);
+            animation: blink .9s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* neural/grid visual */
+        .neural-body {
+            background: var(--black);
+            padding: 20px;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dot-grid {
+            display: grid;
+            grid-template-columns: repeat(32, 1fr);
+            gap: 3px;
+            position: absolute;
+            inset: 0;
+            padding: 20px;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: var(--gray);
+            border-radius: 50%;
+            opacity: .25;
+        }
+
+        .dot.lit {
+            background: var(--orange);
+            opacity: .8;
+        }
+
+        .dot.med {
+            background: #ddd;
+            opacity: .5;
+        }
+
+        /* metrics block */
+        .metrics-block {
+            padding: 0;
+        }
+
+        .metric-row {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--black);
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-num {
+            font-family: var(--display);
+            font-size: clamp(36px, 4vw, 54px);
+            line-height: 1;
+            color: var(--black);
+        }
+
+        .metric-num span {
+            color: var(--orange);
+        }
+
+        .metric-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        /* uptime table */
+        .uptime-block {
+            padding: 0;
+        }
+
+        .uptime-header {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            padding: 8px 20px;
+            border-bottom: 1px solid var(--black);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .uptime-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, .08);
+            font-family: var(--mono);
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .uptime-name {
+            color: var(--black);
+        }
+
+        .uptime-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            display: inline-block;
+        }
+
+        .uptime-status {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            letter-spacing: .06em;
+        }
+
+        .uptime-ms {
+            color: var(--gray);
+            font-size: 11px;
+        }
+
+        .throughput-bar {
+            height: 6px;
+            background: var(--black);
+            margin: 12px 20px;
+            border-radius: 0;
+            position: relative;
+        }
+
+        .throughput-fill {
+            height: 100%;
+            background: var(--orange);
+            width: 73%;
+        }
+
+        /* ─── DEMO SECTIONS ─── */
+        .demo-section {
+            padding: 80px 0;
+            border-bottom: 2px solid var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 2px solid var(--black);
+        }
+
+        .demo-grid.flip .demo-visual {
+            order: 2;
+        }
+
+        .demo-grid.flip .demo-copy {
+            order: 1;
+        }
+
+        .demo-visual {
+            border-right: 1px solid var(--black);
+            position: relative;
+            overflow: hidden;
+            min-height: 380px;
+        }
+
+        .demo-visual-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--black);
+            background: var(--black);
+        }
+
+        .demo-visual-body {
+            background: var(--black);
+            padding: 20px;
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 330px;
+        }
+
+        .demo-copy {
+            padding: 36px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .demo-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .demo-num {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--orange);
+            letter-spacing: .12em;
+        }
+
+        .demo-divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--black);
+            opacity: .2;
+        }
+
+        .demo-h2 {
+            font-family: var(--display);
+            font-size: clamp(36px, 4vw, 52px);
+            line-height: 1.0;
+            letter-spacing: .02em;
+            color: var(--black);
+            margin-bottom: 10px;
+        }
+
+        .demo-h2 span {
+            color: var(--orange);
+        }
+
+        .demo-sub {
+            font-family: var(--sans);
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--gray);
+            margin-bottom: 28px;
+            font-style: italic;
+        }
+
+        .res-list {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .res-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, .1);
+            font-family: var(--sans);
+            font-size: 14px;
+            color: var(--black-s);
+            line-height: 1.5;
+        }
+
+        .res-item:last-child {
+            border-bottom: none;
+        }
+
+        .res-marker {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--orange);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .res-dim {
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        /* bar chart in terminal style */
+        .t-barchart {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 70px;
+            padding: 0 0 4px;
+        }
+
+        .t-bar {
+            flex: 1;
+            background: rgba(255, 107, 53, .3);
+            border-top: 2px solid var(--orange);
+            border-radius: 0;
+            transition: height .3s;
+        }
+
+        .t-stats-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .t-stat-box {
+            flex: 1;
+            border: 1px solid rgba(255, 107, 53, .25);
+            padding: 8px 10px;
+        }
+
+        .t-stat-n {
+            font-family: var(--display);
+            font-size: 24px;
+            color: var(--orange);
+            line-height: 1;
+        }
+
+        .t-stat-l {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--gray);
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* table rows in demo panels */
+        .t-table {
+            width: 100%;
+        }
+
+        .t-table-head {
+            display: grid;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gray);
+            gap: 8px;
+        }
+
+        .t-table-row {
+            display: grid;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            font-family: var(--mono);
+            font-size: 11px;
+            color: #ccc;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .t-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: .06em;
+            padding: 2px 7px;
+            border-radius: 0;
+            font-weight: 700;
+        }
+
+        /* progress / waveform */
+        .wave-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 36px;
+            padding: 0 4px;
+        }
+
+        .w-bar {
+            width: 4px;
+            border-radius: 1px 1px 0 0;
+            background: var(--orange);
+            opacity: .6;
+            animation: wa 1.6s ease-in-out infinite;
+            transform-origin: bottom;
+        }
+
+        @keyframes wa {
+
+            0%,
+            100% {
+                transform: scaleY(.2);
+            }
+
+            50% {
+                transform: scaleY(1);
+            }
+        }
+
+        /* ─── PRICING ─── */
+        .pricing-section {
+            padding: 80px 0;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .pricing-intro {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .pricing-h2 {
+            font-family: var(--display);
+            font-size: clamp(40px, 5vw, 68px);
+            line-height: .95;
+            letter-spacing: .02em;
+            color: var(--black);
+        }
+
+        .pricing-sub {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--gray);
+            max-width: 280px;
+            line-height: 1.6;
+            text-align: right;
+        }
+
+        .pricing-live {
+            font-family: var(--mono);
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--orange);
+            margin-top: 6px;
+            justify-content: flex-end;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border: 2px solid var(--black);
+        }
+
+        .price-card {
+            padding: 0;
+            border-right: 1px solid var(--black);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-card:last-child {
+            border-right: none;
+        }
+
+        .price-card-header {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price-card-name {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .price-card-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: .08em;
+            padding: 3px 8px;
+            font-weight: 700;
+        }
+
+        .price-card.featured .price-card-header {
+            background: var(--orange);
+        }
+
+        .price-card.featured .price-card-name {
+            color: var(--black);
+        }
+
+        .price-amount {
+            font-family: var(--display);
+            font-size: clamp(44px, 5vw, 72px);
+            line-height: 1;
+            color: var(--black);
+        }
+
+        .price-period {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--gray);
+            letter-spacing: .06em;
+        }
+
+        .price-body {
+            padding: 24px;
+        }
+
+        .price-desc {
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 1.7;
+            color: var(--gray);
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, .1);
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: auto;
+        }
+
+        .price-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 7px 0;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--black-s);
+            line-height: 1.4;
+            border-bottom: 1px dashed rgba(0, 0, 0, .07);
+        }
+
+        .price-feature:last-child {
+            border-bottom: none;
+        }
+
+        .pf-check {
+            color: var(--orange);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .pf-dim {
+            color: var(--gray);
+        }
+
+        .price-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--black);
+            margin-top: 28px;
+        }
+
+        .price-note {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--gray);
+            padding-top: 14px;
+            border-top: 1px solid rgba(0, 0, 0, .1);
+            text-align: center;
+        }
+
+        /* ─── TECH STRIP ─── */
+        .tech-strip {
+            padding: 32px 0;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .tech-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .tech-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gray);
+            padding-right: 32px;
+            border-right: 1px solid rgba(0, 0, 0, .15);
+            margin-right: 8px;
+        }
+
+        .tech-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            flex: 1;
+        }
+
+        .tech-name {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--black);
+            padding: 6px 20px;
+            border-right: 1px solid rgba(0, 0, 0, .12);
+            transition: color .15s;
+        }
+
+        .tech-name:last-child {
+            border-right: none;
+        }
+
+        .tech-name:hover {
+            color: var(--orange);
+        }
+
+        /* ─── FINAL CTA ─── */
+        #final {
+            padding: 120px 0;
+            background: var(--black);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid var(--orange);
+        }
+
+        .final-grid-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(255, 107, 53, .04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 107, 53, .04) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .final-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .final-eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .final-eyebrow::before,
+        .final-eyebrow::after {
+            content: '';
+            flex: 0 0 60px;
+            height: 1px;
+            background: rgba(255, 107, 53, .3);
+        }
+
+        .final-h2 {
+            font-family: var(--display);
+            font-size: clamp(60px, 10vw, 130px);
+            line-height: .9;
+            letter-spacing: .02em;
+            color: var(--cream);
+            margin-bottom: 16px;
+        }
+
+        .final-h2 span {
+            color: var(--orange);
+        }
+
+        .final-sub {
+            font-family: var(--mono);
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(240, 237, 230, .45);
+            max-width: 400px;
+            margin: 0 auto 40px;
+        }
+
+        .final-btns {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .final-note {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: rgba(255, 255, 255, .2);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-top: 28px;
+        }
+
+        .final-note span {
+            color: rgba(255, 107, 53, .6);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            padding: 24px 0;
+        }
+
+        .foot-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .foot-logo {
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--cream);
+            opacity: .5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .foot-copy {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .06em;
+            color: rgba(255, 255, 255, .2);
+        }
+
+        .foot-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .foot-links a {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .06em;
+            color: rgba(255, 255, 255, .25);
+            text-decoration: none;
+            transition: color .15s;
+        }
+
+        .foot-links a:hover {
+            color: rgba(255, 255, 255, .6);
+        }
+
+        /* ─── REVEAL ─── */
+        .rv {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .65s cubic-bezier(.22, 1, .36, 1),
+                transform .65s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rv.on {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .08s;
+        }
+
+        .d2 {
+            transition-delay: .16s;
+        }
+
+        .d3 {
+            transition-delay: .24s;
+        }
+
+        .d4 {
+            transition-delay: .32s;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media(max-width:900px) {
+
+            .wrap,
+            .nav-wrap {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stats-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-box {
+                border-bottom: 1px solid var(--black);
+            }
+
+            .terminal-section {
+                grid-template-columns: 1fr;
+            }
+
+            .terminal-block {
+                border-right: none;
+                border-bottom: 1px solid var(--black);
+            }
+
+            .demo-grid,
+            .demo-grid.flip {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-visual {
+                border-right: none;
+                border-bottom: 1px solid var(--black);
+            }
+
+            .demo-grid.flip .demo-visual {
+                order: 0;
+            }
+
+            .demo-grid.flip .demo-copy {
+                order: 0;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .price-card {
+                border-right: none;
+                border-bottom: 1px solid var(--black);
+            }
+
+            .pricing-intro {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .pricing-sub {
+                text-align: left;
+            }
+
+            .circuit-wrap {
+                width: 320px;
+            }
+
+            .cn-ingest,
+            .cn-process,
+            .cn-version {
+                font-size: 9px;
+            }
+
+            .cn-deploy,
+            .cn-route,
+            .cn-observe {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ─── NAV ─── -->
+    <nav>
+        <div class="nav-wrap">
+            <div class="nav-logo">
+                <div class="nav-logo-icon"></div>
+                TRQ.IO
+            </div>
+            <div class="nav-links">
+                <a href="#">Platform</a>
+                <a href="#">Services</a>
+                <a href="#">Results</a>
+                <a href="#">Company</a>
+            </div>
+            <div class="nav-actions">
+                <span class="nav-link-sm" onclick="console.log('login')">LOG IN</span>
+                <button class="btn-nav" onclick="console.log('nav: demo')">REQUEST DEMO</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ─── HERO ─── -->
+    <header id="hero">
+
+        <div class="hero-main">
+            <div class="hero-display rv">AUTOMATE. CLOSE.</div>
+
+            <!-- Circuit node diagram -->
+            <div class="circuit-wrap rv d1">
+                <svg class="circuit-svg" viewBox="0 0 520 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- lines from center to nodes -->
+                    <line x1="260" y1="45" x2="80" y2="16" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3" />
+                    <line x1="260" y1="45" x2="65" y2="55" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3" />
+                    <line x1="260" y1="45" x2="100" y2="78" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3" />
+                    <line x1="260" y1="45" x2="430" y2="14" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3" />
+                    <line x1="260" y1="45" x2="448" y2="55" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3" />
+                    <line x1="260" y1="45" x2="418" y2="78" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4 3" />
+                    <!-- dots at connection points -->
+                    <circle cx="80" cy="16" r="3" fill="#FF6B35" />
+                    <circle cx="65" cy="55" r="3" fill="#FF6B35" />
+                    <circle cx="100" cy="78" r="3" fill="#FF6B35" />
+                    <circle cx="430" cy="14" r="3" fill="#FF6B35" />
+                    <circle cx="448" cy="55" r="3" fill="#FF6B35" />
+                    <circle cx="418" cy="78" r="3" fill="#FF6B35" />
+                </svg>
+                <!-- center node -->
+                <div class="circuit-center">✦</div>
+                <!-- pill nodes -->
+                <div class="circuit-node cn-ingest">INGEST</div>
+                <div class="circuit-node cn-process">ENRICH</div>
+                <div class="circuit-node cn-version">QUALIFY</div>
+                <div class="circuit-node cn-deploy">RESPOND</div>
+                <div class="circuit-node cn-route">ROUTE</div>
+                <div class="circuit-node cn-observe">CLOSE</div>
+            </div>
+
+            <div class="hero-display-2 rv d1">SCALE.</div>
+
+            <div class="hero-sub-wrap rv d2">
+                <div class="hero-sub-label">// TRQ.IO — OPERATIONS INFRASTRUCTURE</div>
+                <div class="hero-sub">Torque is the automation layer between your business processes and your results.
+                    AI-driven workflows. Zero bottlenecks. Full operational control.</div>
+            </div>
+            <div class="hero-ctas rv d3">
+                <button class="btn btn-primary"
+                    onclick="document.getElementById('demo-1').scrollIntoView({behavior:'smooth'})">
+                    <span>▶</span> SEE OUR WORK
+                </button>
+                <button class="btn btn-ghost" onclick="console.log('hero: book call')">BOOK A CALL</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-panel">
+            <div class="stat-box rv">
+                <div class="stat-val"><span>60</span>S</div>
+                <div class="stat-label">AVG. LEAD RESPONSE</div>
+            </div>
+            <div class="stat-box rv d1">
+                <div class="stat-val">30<span>%</span></div>
+                <div class="stat-label">HIGHER CLOSE RATES</div>
+            </div>
+            <div class="stat-box rv d2">
+                <div class="stat-val">20<span>+</span></div>
+                <div class="stat-label">HOURS SAVED / WEEK</div>
+            </div>
+            <div class="stat-box rv d3">
+                <div class="stat-val"><span>$60K</span></div>
+                <div class="stat-label">LABOR COST SAVINGS / YEAR</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ─── SECTION MARKER: RAW_DATA ─── -->
+    <div class="sec-marker">
+        <span class="sec-marker-label">// SECTION: RAW_DATA</span>
+        <span class="sec-marker-line"></span>
+        <span class="sec-marker-num">001</span>
+    </div>
+
+    <!-- ─── TERMINAL PANEL ─── -->
+    <div class="terminal-section">
+
+        <!-- Terminal left -->
+        <div class="terminal-block">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <div class="terminal-dot" style="background:#ff5f57;"></div>
+                    <div class="terminal-dot" style="background:#ffbd2e;"></div>
+                    <div class="terminal-dot" style="background:#28c840;"></div>
+                </div>
+                <div class="terminal-title">TERMINAL — TRQ.SYS</div>
+                <div class="terminal-dim">v2.4.1</div>
+            </div>
+            <div class="terminal-body">
+                <div class="t-line"><span class="t-prompt">›</span><span> Scanning lead queue...</span></div>
+                <div class="t-line"><span class="t-ok">✓</span><span> Enrichment pass: 3/3</span></div>
+                <div class="t-line"><span class="t-ok">✓</span><span> AI scoring: complete</span></div>
+                <div class="t-line"><span class="t-ok">✓</span><span> CRM sync: done</span></div>
+                <div class="t-line"><span class="t-prompt">›</span><span> Dispatching responses...</span></div>
+                <div class="t-line"><span class="t-ok">✓</span><span> Status: <span
+                            style="color:#FF6B35;">OPERATIONAL</span></span></div>
+                <div class="t-line"><span class="t-comment">#</span><span class="t-comment"> Latency: 38ms avg</span>
+                </div>
+                <div class="t-line"><span class="t-comment">#</span><span class="t-comment"> Throughput: 2.1K
+                        req/h</span></div>
+                <div class="t-line"><span class="t-comment">#</span><span class="t-comment"> Uptime: 99.97%</span></div>
+                <div class="t-line" style="margin-top:8px;"><span class="t-warn">——— CYCLE COMPLETE ———</span></div>
+                <div class="t-line"><span class="t-prompt">›</span><span><span class="t-cursor"></span></span></div>
+            </div>
+        </div>
+
+        <!-- Dot grid / neural map right -->
+        <div class="terminal-block">
+            <div class="terminal-header">
+                <div class="terminal-title">WORKFLOW_NETWORK.VISUAL</div>
+                <div class="terminal-dim">1280×640</div>
+            </div>
+            <div class="neural-body" style="min-height:260px;">
+                <!-- dot grid -->
+                <div class="dot-grid" id="dotgrid"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Metrics / uptime row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--black);">
+
+        <!-- Big metrics -->
+        <div class="metrics-block" style="border-right:1px solid var(--black);">
+            <div class="metric-row" style="border-bottom:1px solid var(--black);">
+                <div class="metric-num"><span>4.2</span>ms</div>
+                <div class="metric-label">P99 LATENCY</div>
+            </div>
+            <div class="metric-row" style="border-bottom:1px solid var(--black);">
+                <div class="metric-num">2.1<span>K</span></div>
+                <div class="metric-label">REQUESTS / HOUR</div>
+            </div>
+            <div class="metric-row" style="border-bottom:1px solid var(--black);">
+                <div class="metric-num">99.<span>97%</span></div>
+                <div class="metric-label">UPTIME</div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-num"><span>312</span></div>
+                <div class="metric-label">LEADS PROCESSED / MONTH</div>
+            </div>
+        </div>
+
+        <!-- Uptime / node table -->
+        <div class="uptime-block">
+            <div style="background:var(--black);padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.08);">
+                <div
+                    style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--gray);text-transform:uppercase;">
+                    EDGE_NODE_STATUS</div>
+            </div>
+            <div class="uptime-header" style="grid-template-columns:1fr auto auto;">
+                <span>REGION</span><span>STATUS</span><span>LATENCY</span>
+            </div>
+            <div class="uptime-row" style="grid-template-columns:1fr auto auto;">
+                <span class="uptime-name">US-EAST-1</span>
+                <span class="uptime-status"><span class="uptime-dot" style="background:#4ade80;"></span>ONLINE</span>
+                <span class="uptime-ms">3.8ms</span>
+            </div>
+            <div class="uptime-row" style="grid-template-columns:1fr auto auto;">
+                <span class="uptime-name">AP-WEST-2</span>
+                <span class="uptime-status"><span class="uptime-dot" style="background:#fbbf24;"></span>WARM</span>
+                <span class="uptime-ms">4.1ms</span>
+            </div>
+            <div class="uptime-row" style="grid-template-columns:1fr auto auto;">
+                <span class="uptime-name">AP-SOUTH-1</span>
+                <span class="uptime-status"><span class="uptime-dot" style="background:#4ade80;"></span>ONLINE</span>
+                <span class="uptime-ms">5.0ms</span>
+            </div>
+            <div class="uptime-row" style="grid-template-columns:1fr auto auto;">
+                <span class="uptime-name">EU-WEST-2</span>
+                <span class="uptime-status"><span class="uptime-dot" style="background:#4ade80;"></span>ONLINE</span>
+                <span class="uptime-ms">4.7ms</span>
+            </div>
+            <div style="padding:12px 20px;border-top:1px solid rgba(0,0,0,.08);">
+                <div
+                    style="font-family:var(--mono);font-size:9px;color:var(--gray);letter-spacing:.09em;margin-bottom:6px;text-transform:uppercase;">
+                    GLOBAL THROUGHPUT</div>
+                <div class="throughput-bar">
+                    <div class="throughput-fill"></div>
+                </div>
+                <div
+                    style="font-family:var(--mono);font-size:9px;color:var(--orange);text-align:right;margin-top:4px;letter-spacing:.06em;">
+                    73%</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ─── SECTION MARKER: DEMOS ─── -->
+    <div class="sec-marker">
+        <span class="sec-marker-label">// SECTION: AUTOMATION_DEMOS</span>
+        <span class="sec-marker-line"></span>
+        <span class="sec-marker-num">002</span>
+    </div>
+
+    <main>
+
+        <!-- ─── DEMO 1: Lead Response ─── -->
+        <section class="demo-section" id="demo-1">
+            <div class="wrap">
+                <div class="demo-grid rv">
+
+                    <div class="demo-visual">
+                        <div class="demo-visual-header">
+                            <div class="terminal-dots">
+                                <div class="terminal-dot" style="background:#ff5f57;"></div>
+                                <div class="terminal-dot" style="background:#ffbd2e;"></div>
+                                <div class="terminal-dot" style="background:#28c840;"></div>
+                            </div>
+                            <div class="terminal-title">LEAD_PIPELINE.SYS</div>
+                            <div class="terminal-dim" style="color:#FF6B35;">● LIVE</div>
+                        </div>
+                        <div class="demo-visual-body">
+                            <div>
+                                <div
+                                    style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:10px;">
+                                    RESPONSE VELOCITY — 7 DAY</div>
+                                <div class="t-barchart">
+                                    <div class="t-bar" style="height:32%"></div>
+                                    <div class="t-bar" style="height:56%"></div>
+                                    <div class="t-bar" style="height:41%"></div>
+                                    <div class="t-bar" style="height:71%"></div>
+                                    <div class="t-bar" style="height:58%"></div>
+                                    <div class="t-bar" style="height:88%"></div>
+                                    <div class="t-bar" style="height:67%"></div>
+                                </div>
+                            </div>
+                            <div class="t-stats-row">
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n">43s</div>
+                                    <div class="t-stat-l">Avg response</div>
+                                </div>
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n">+31%</div>
+                                    <div class="t-stat-l">Close rate</div>
+                                </div>
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n" style="color:#4ade80;">0</div>
+                                    <div class="t-stat-l">Missed leads</div>
+                                </div>
+                            </div>
+                            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;">
+                                <div class="t-table">
+                                    <div class="t-table-head" style="grid-template-columns:1fr 1fr auto;">
+                                        <span>LEAD</span><span>STATUS</span><span>TIME</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr auto;">
+                                        <span>Acme Corp</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">RESPONDED</span></span>
+                                        <span style="color:var(--orange);">38s</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr auto;">
+                                        <span>TechFlow Inc</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(255,107,53,.15);color:#FF6B35;">QUALIFYING</span></span>
+                                        <span style="color:var(--gray);">—</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr auto;">
+                                        <span>BuildCo</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">CLOSED</span></span>
+                                        <span style="color:var(--orange);">52s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- waveform -->
+                            <div
+                                style="position:absolute;bottom:0;left:0;right:0;height:36px;display:flex;align-items:flex-end;padding:0 12px 6px;gap:2px;opacity:.2;">
+                                <div class="w-bar" style="height:10px;animation-delay:0s;"></div>
+                                <div class="w-bar" style="height:18px;animation-delay:.1s;"></div>
+                                <div class="w-bar" style="height:12px;animation-delay:.2s;"></div>
+                                <div class="w-bar" style="height:24px;animation-delay:.15s;"></div>
+                                <div class="w-bar" style="height:9px;animation-delay:.3s;"></div>
+                                <div class="w-bar" style="height:20px;animation-delay:.05s;"></div>
+                                <div class="w-bar" style="height:15px;animation-delay:.25s;"></div>
+                                <div class="w-bar" style="height:10px;animation-delay:.35s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-copy">
+                        <div class="demo-eyebrow">
+                            <span class="demo-num">// 01</span>
+                            <div class="demo-divider-line"></div>
+                        </div>
+                        <h2 class="demo-h2">LEAD RESPONSE<br><span>ACCELERATOR</span></h2>
+                        <p class="demo-sub">For service businesses losing deals to slow follow-up.</p>
+                        <ul class="res-list">
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>60-second response times <span class="res-dim">(vs 2+ hours
+                                        manually)</span></span>
+                            </li>
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>30% higher close rates across clients</span>
+                            </li>
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>Zero leads fall through the cracks</span>
+                            </li>
+                        </ul>
+                        <button class="btn btn-ghost" onclick="console.log('cta: lead response')">BOOK A CALL FOR THIS
+                            →</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── DEMO 2: E-commerce ─── -->
+        <section class="demo-section" id="demo-2">
+            <div class="wrap">
+                <div class="demo-grid flip rv">
+
+                    <div class="demo-copy">
+                        <div class="demo-eyebrow">
+                            <span class="demo-num">// 02</span>
+                            <div class="demo-divider-line"></div>
+                        </div>
+                        <h2 class="demo-h2">E-COMMERCE<br><span>ORDER AUTOMATION</span></h2>
+                        <p class="demo-sub">For online stores drowning in manual work.</p>
+                        <ul class="res-list">
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>20+ hours/week saved on manual tasks</span>
+                            </li>
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>Real-time inventory tracking across all channels</span>
+                            </li>
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>$30K–$60K/year <span class="res-dim">in labor costs eliminated</span></span>
+                            </li>
+                        </ul>
+                        <button class="btn btn-ghost" onclick="console.log('cta: ecommerce')">BOOK A CALL FOR THIS
+                            →</button>
+                    </div>
+
+                    <div class="demo-visual">
+                        <div class="demo-visual-header">
+                            <div class="terminal-dots">
+                                <div class="terminal-dot" style="background:#ff5f57;"></div>
+                                <div class="terminal-dot" style="background:#ffbd2e;"></div>
+                                <div class="terminal-dot" style="background:#28c840;"></div>
+                            </div>
+                            <div class="terminal-title">ORDER_SYNC.DASHBOARD</div>
+                            <div class="terminal-dim">REAL-TIME</div>
+                        </div>
+                        <div class="demo-visual-body">
+                            <div>
+                                <div
+                                    style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:10px;">
+                                    ORDER PIPELINE STATUS</div>
+                                <div class="t-table">
+                                    <div class="t-table-head" style="grid-template-columns:1fr 1fr 1fr auto;">
+                                        <span>ORDER</span><span>PLATFORM</span><span>STATUS</span><span>$</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr 1fr auto;">
+                                        <span>#4821</span><span>Shopify</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">SYNCED</span></span>
+                                        <span style="color:var(--orange);">$340</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr 1fr auto;">
+                                        <span>#4822</span><span>WooComm</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(255,107,53,.15);color:#FF6B35;">ROUTING</span></span>
+                                        <span style="color:var(--gray);">$1.2K</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr 1fr auto;">
+                                        <span>#4823</span><span>Amazon</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">FULFILLED</span></span>
+                                        <span style="color:var(--orange);">$88</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:1fr 1fr 1fr auto;">
+                                        <span>#4824</span><span>Shopify</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">SYNCED</span></span>
+                                        <span style="color:var(--orange);">$650</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="font-family:var(--mono);font-size:9px;color:var(--gray);letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;">
+                                    INVENTORY SYNC — SKU COVERAGE</div>
+                                <div
+                                    style="height:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,107,53,.2);">
+                                    <div style="height:100%;width:94%;background:var(--orange);"></div>
+                                </div>
+                                <div
+                                    style="font-family:var(--mono);font-size:10px;color:var(--orange);text-align:right;margin-top:3px;">
+                                    94% IN SYNC</div>
+                            </div>
+                            <div class="t-stats-row">
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n">$47K</div>
+                                    <div class="t-stat-l">Saved/year</div>
+                                </div>
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n">22h</div>
+                                    <div class="t-stat-l">Saved/week</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── DEMO 3: Support Triage ─── -->
+        <section class="demo-section" id="demo-3">
+            <div class="wrap">
+                <div class="demo-grid rv">
+
+                    <div class="demo-visual">
+                        <div class="demo-visual-header">
+                            <div class="terminal-dots">
+                                <div class="terminal-dot" style="background:#ff5f57;"></div>
+                                <div class="terminal-dot" style="background:#ffbd2e;"></div>
+                                <div class="terminal-dot" style="background:#28c840;"></div>
+                            </div>
+                            <div class="terminal-title">SUPPORT_TRIAGE.AI</div>
+                            <div class="terminal-dim" style="color:#4ade80;">● AI ACTIVE</div>
+                        </div>
+                        <div class="demo-visual-body">
+                            <div>
+                                <div
+                                    style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:10px;">
+                                    TICKET CLASSIFICATION QUEUE</div>
+                                <div class="t-table">
+                                    <div class="t-table-head" style="grid-template-columns:2fr 1fr 1fr;">
+                                        <span>TICKET</span><span>PRIORITY</span><span>ACTION</span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:2fr 1fr 1fr;">
+                                        <span>Password reset — User #2841</span>
+                                        <span style="color:var(--gray);">LOW</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">AUTO
+                                                ✓</span></span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:2fr 1fr 1fr;">
+                                        <span>Billing — Jane D.</span>
+                                        <span style="color:var(--gray);">LOW</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(74,222,128,.15);color:#4ade80;">AUTO
+                                                ✓</span></span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:2fr 1fr 1fr;">
+                                        <span>Order issue — refund req.</span>
+                                        <span style="color:#fbbf24;">MED</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(251,191,36,.15);color:#fbbf24;">QUEUED</span></span>
+                                    </div>
+                                    <div class="t-table-row" style="grid-template-columns:2fr 1fr 1fr;">
+                                        <span>Account breach — Tom S.</span>
+                                        <span style="color:#FF6B35;">HIGH</span>
+                                        <span><span class="t-tag"
+                                                style="background:rgba(255,107,53,.2);color:#FF6B35;">→
+                                                AGENT</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="t-stats-row">
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n">70%</div>
+                                    <div class="t-stat-l">Faster resp.</div>
+                                </div>
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n">-40%</div>
+                                    <div class="t-stat-l">Workload</div>
+                                </div>
+                                <div class="t-stat-box">
+                                    <div class="t-stat-n" style="color:#4ade80;">30%</div>
+                                    <div class="t-stat-l">Auto-resolved</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-copy">
+                        <div class="demo-eyebrow">
+                            <span class="demo-num">// 03</span>
+                            <div class="demo-divider-line"></div>
+                        </div>
+                        <h2 class="demo-h2">AI SUPPORT<br><span>TRIAGE</span></h2>
+                        <p class="demo-sub">For support teams overwhelmed by ticket volume.</p>
+                        <ul class="res-list">
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>70% faster response times</span>
+                            </li>
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>40% reduction in support workload</span>
+                            </li>
+                            <li class="res-item">
+                                <span class="res-marker">▶</span>
+                                <span>Auto-resolve 30% of common issues</span>
+                            </li>
+                        </ul>
+                        <button class="btn btn-ghost" onclick="console.log('cta: support triage')">BOOK A CALL FOR THIS
+                            →</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── SECTION MARKER: PRICING ─── -->
+    <div class="sec-marker">
+        <span class="sec-marker-label">// SECTION: SERVICE_TIERS</span>
+        <span class="sec-marker-line"></span>
+        <span class="sec-marker-num">003</span>
+    </div>
+
+    <!-- ─── PRICING ─── -->
+    <section class="pricing-section">
+        <div class="wrap">
+            <div class="pricing-intro rv">
+                <h2 class="pricing-h2">SELECT YOUR<br>SERVICE TIER</h2>
+                <div>
+                    <p class="pricing-sub">All tiers include zero-config deployment, built-in monitoring, and access to
+                        the Torque automation API.</p>
+                    <div class="pricing-live">
+                        <span
+                            style="width:6px;height:6px;border-radius:50%;background:var(--orange);animation:blink .9s infinite;"></span>
+                        LIVE THROUGHPUT: 2.1K REQ/H
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-grid rv d1">
+
+                <!-- Starter -->
+                <div class="price-card">
+                    <div class="price-card-header">
+                        <span class="price-card-name">STARTER</span>
+                        <span class="price-card-tag"
+                            style="color:var(--gray);border:1px solid rgba(0,0,0,.15);">01</span>
+                    </div>
+                    <div class="price-body">
+                        <div style="margin-bottom:8px;">
+                            <div class="price-amount">$0</div>
+                            <div class="price-period">/ FREE AUDIT</div>
+                        </div>
+                        <p class="price-desc">One free workflow audit. We map your operations and identify the
+                            highest-leverage automation opportunities.</p>
+                        <ul class="price-features">
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Operations audit call</span>
+                            </li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Automation opportunity
+                                    map</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>ROI estimate report</span>
+                            </li>
+                            <li class="price-feature"><span class="pf-check pf-dim">–</span><span class="pf-dim">No
+                                    build included</span></li>
+                            <li class="price-feature"><span class="pf-check pf-dim">–</span><span class="pf-dim">No
+                                    SLA</span></li>
+                        </ul>
+                    </div>
+                    <div class="price-footer">
+                        <button class="btn btn-ghost" style="width:100%;justify-content:center;"
+                            onclick="console.log('pricing: starter')">BOOK FREE AUDIT</button>
+                    </div>
+                </div>
+
+                <!-- Pro — featured -->
+                <div class="price-card featured">
+                    <div class="price-card-header">
+                        <span class="price-card-name">PRO_TIER</span>
+                        <span class="price-card-tag"
+                            style="background:var(--black);color:var(--orange);font-size:9px;letter-spacing:.1em;">RECOMMENDED</span>
+                    </div>
+                    <div class="price-body">
+                        <div style="margin-bottom:8px;">
+                            <div class="price-amount">$2,500</div>
+                            <div class="price-period">/ MONTH</div>
+                        </div>
+                        <p class="price-desc">Production-grade automation. Unlimited revisions. 99.9% uptime SLA. Your
+                            ops stack, fully automated.</p>
+                        <ul class="price-features">
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Up to 3 automation
+                                    workflows</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>All major CRM
+                                    integrations</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>AI scoring +
+                                    enrichment</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Monthly performance
+                                    reports</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Priority support
+                                    channel</span></li>
+                        </ul>
+                    </div>
+                    <div class="price-footer">
+                        <button class="btn btn-primary" style="width:100%;justify-content:center;"
+                            onclick="console.log('pricing: pro')">
+                            <span>▶</span> START BUILDING
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="price-card">
+                    <div class="price-card-header">
+                        <span class="price-card-name">ENTERPRISE</span>
+                        <span class="price-card-tag"
+                            style="color:var(--gray);border:1px solid rgba(0,0,0,.15);">03</span>
+                    </div>
+                    <div class="price-body">
+                        <div style="margin-bottom:8px;">
+                            <div class="price-amount">CUSTOM</div>
+                            <div class="price-period">/ FULL CONTROL</div>
+                        </div>
+                        <p class="price-desc">Full-scale automation infrastructure. Custom integrations. Dedicated
+                            engineering. On-prem available.</p>
+                        <ul class="price-features">
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Unlimited workflows</span>
+                            </li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Custom API
+                                    integrations</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>Dedicated engineer
+                                    on-call</span></li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>99.99% SLA guarantee</span>
+                            </li>
+                            <li class="price-feature"><span class="pf-check">✓</span><span>24/7 monitoring +
+                                    alerting</span></li>
+                        </ul>
+                    </div>
+                    <div class="price-footer">
+                        <button class="btn btn-secondary" style="width:100%;justify-content:center;"
+                            onclick="console.log('pricing: enterprise')">CONTACT SALES</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="price-note rv d2">// ALL PLANS BILLED MONTHLY · CANCEL ANYTIME · NO VENDOR LOCK-IN</div>
+        </div>
+    </section>
+
+    <!-- ─── SECTION MARKER: PARTNERS ─── -->
+    <div class="sec-marker">
+        <span class="sec-marker-label">// PARTNERS: STACK_DISTRIBUTION</span>
+        <span class="sec-marker-line"></span>
+        <span class="sec-marker-num">004</span>
+    </div>
+
+    <!-- ─── TECH STRIP ─── -->
+    <section class="tech-strip">
+        <div class="wrap">
+            <div class="tech-inner rv">
+                <div class="tech-label">Stack</div>
+                <div class="tech-names">
+                    <span class="tech-name">N8N</span>
+                    <span class="tech-name">MAKE</span>
+                    <span class="tech-name">ZAPIER</span>
+                    <span class="tech-name">OPENAI</span>
+                    <span class="tech-name">HUBSPOT</span>
+                    <span class="tech-name">SALESFORCE</span>
+                    <span class="tech-name">SLACK</span>
+                    <span class="tech-name">SHOPIFY</span>
+                    <span class="tech-name">AIRTABLE</span>
+                    <span class="tech-name">TWILIO</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FINAL CTA ─── -->
+    <section id="final">
+        <div class="final-grid-bg"></div>
+        <div class="wrap">
+            <div class="final-inner rv">
+                <div class="final-eyebrow">// INITIATE_ENGAGEMENT</div>
+                <h2 class="final-h2">AUTOMATE<br>YOUR <span>OPS.</span></h2>
+                <p class="final-sub">Torque is the automation layer your business has been missing. AI-driven. Zero
+                    bottlenecks. Full operational control.</p>
+                <div class="final-btns">
+                    <button class="btn"
+                        style="background:var(--orange);color:var(--black);font-size:14px;padding:15px 36px;"
+                        onclick="console.log('final: discovery call')">
+                        <span>▶</span> BOOK A DISCOVERY CALL
+                    </button>
+                    <button class="btn"
+                        style="background:transparent;color:var(--cream);border-color:rgba(240,237,230,.2);"
+                        onclick="document.getElementById('demo-1').scrollIntoView({behavior:'smooth'})">
+                        SEE OUR WORK ↓
+                    </button>
+                </div>
+                <div class="final-note">
+                    BUILT ON <span>N8N</span> &nbsp;·&nbsp; CUSTOM INTEGRATIONS &nbsp;·&nbsp; <span>AI-POWERED</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+        <div class="wrap">
+            <div class="foot-inner">
+                <div class="foot-logo">
+                    <div
+                        style="width:16px;height:16px;background:var(--orange);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);">
+                    </div>
+                    TRQ.IO
+                </div>
+                <div class="foot-copy">TORQUE AUTOMATION CORP. © 2025</div>
+                <div class="foot-links">
+                    <a href="#">PRIVACY</a>
+                    <a href="#">TERMS</a>
+                    <a href="#">GITHUB</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dot grid generation
+        (function () {
+            const grid = document.getElementById('dotgrid');
+            if (!grid) return;
+            const total = 32 * 20;
+            const lit = [45, 46, 47, 77, 78, 79, 109, 110, 111, 141, 142, 143, 173, 174, 175,
+                76, 108, 140, 172, 204, 236, 268, 300, 332, 364,
+                200, 201, 202, 203, 232, 233, 234, 235, 264, 265, 266, 267];
+            const med = [44, 48, 76, 112, 140, 176, 199, 204, 231, 236, 263, 268];
+            for (let i = 0; i < total; i++) {
+                const d = document.createElement('div');
+                d.className = 'dot' + (lit.includes(i) ? ' lit' : med.includes(i) ? ' med' : '');
+                grid.appendChild(d);
+            }
+        })();
+
+        // Scroll reveal
+        const els = document.querySelectorAll('.rv');
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+        }, { threshold: 0.08 });
+        els.forEach(el => io.observe(el));
+    </script>
+</body>
+
+</html>
