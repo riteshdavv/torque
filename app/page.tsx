@@ -395,7 +395,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="price-footer">
-                <button className="btn btn-ghost" style={{ width: "100%", justifyContent: "center" }} onClick={() => console.log("pricing: starter")}>GET STARTED</button>
+                <button className="btn btn-ghost" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>GET STARTED</button>
               </div>
             </div>
 
@@ -439,7 +439,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="price-footer">
-                <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => console.log("pricing: pro")}>
+                <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
                   <span>▶</span> START BUILDING
                 </button>
               </div>
@@ -488,7 +488,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="price-footer">
-                <button className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }} onClick={() => console.log("pricing: enterprise")}>CONTACT SALES</button>
+                <button className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>CONTACT SALES</button>
               </div>
             </div>
           </div>
