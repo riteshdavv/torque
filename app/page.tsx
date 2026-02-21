@@ -40,7 +40,7 @@ export default function Home() {
             <a href="#" onClick={(e) => { e.preventDefault(); scrollTo("sec-pricing"); }}>Pricing</a>
           </div>
           <div className="nav-actions">
-            <button className="btn-nav" onClick={() => console.log("nav: demo")}>BOOK A CALL</button>
+            <button className="btn-nav" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
           </div>
         </div>
       </nav>
@@ -72,7 +72,7 @@ export default function Home() {
             <button className="btn btn-primary" onClick={() => scrollTo("sec-demos")}>
               <span>▶</span> SEE OUR WORK
             </button>
-            <button className="btn btn-ghost" onClick={() => console.log("hero: book call")}>BOOK A CALL</button>
+            <button className="btn btn-ghost" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
           </div>
         </div>
       </header>
@@ -180,7 +180,7 @@ export default function Home() {
                 </ul>
                 <div className="demo-btns">
                   <button className="btn btn-ghost" onClick={() => console.log("demo: lead response")}>VIEW DEMO</button>
-                  <button className="btn btn-primary" onClick={() => console.log("cta: lead response")}>BOOK A CALL</button>
+                  <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
                 </div>
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function Home() {
                 </ul>
                 <div className="demo-btns">
                   <button className="btn btn-ghost" onClick={() => console.log("demo: ecommerce")}>VIEW DEMO</button>
-                  <button className="btn btn-primary" onClick={() => console.log("cta: ecommerce")}>BOOK A CALL</button>
+                  <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
                 </div>
               </div>
 
@@ -325,7 +325,7 @@ export default function Home() {
                 </ul>
                 <div className="demo-btns">
                   <button className="btn btn-ghost" onClick={() => console.log("demo: support triage")}>VIEW DEMO</button>
-                  <button className="btn btn-primary" onClick={() => console.log("cta: support triage")}>BOOK A CALL</button>
+                  <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
                 </div>
               </div>
             </div>
@@ -506,7 +506,7 @@ export default function Home() {
             <h2 className="final-h2">AUTOMATE<br />YOUR <span>OPS.</span></h2>
             <p className="final-sub">Torque is the automation layer your business has been missing.<br />AI-driven. Zero bottlenecks. Full operational control.</p>
             <div className="final-btns" style={{ gap: "1rem" }}>
-              <button className="btn btn-final-primary" onClick={() => console.log("final: discovery call")}>
+              <button className="btn btn-final-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
                 <span>▶</span> BOOK A DISCOVERY CALL
               </button>
               <button className="btn btn-final-outline" onClick={() => scrollTo("sec-demos")}>
