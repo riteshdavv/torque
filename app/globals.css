@@ -744,7 +744,7 @@ nav {
   grid-template-columns: 1.4fr 1fr;
   gap: 0;
   border: 2px solid var(--black);
-  height: 560px;
+  min-height: 560px;
 }
 
 .demo-grid.flip {

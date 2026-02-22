@@ -9,6 +9,7 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function Home() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   useEffect(() => {
     /* scroll reveal */
@@ -147,14 +148,26 @@ export default function Home() {
                         <span><span className="t-tag" style={{ background: "rgba(74,222,128,.15)", color: "#4ade80" }}>CLOSED</span></span>
                         <span style={{ color: "var(--orange)", textAlign: "right" }}>52s</span>
                       </div>
+                      <div className="t-table-row" style={{ gridTemplateColumns: "1fr 1fr 60px" }}>
+                        <span>Nova Dynamics</span>
+                        <span><span className="t-tag" style={{ background: "rgba(251,191,36,.15)", color: "#fbbf24" }}>WAITING</span></span>
+                        <span style={{ color: "var(--orange)", textAlign: "right" }}>12m</span>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase" as const, color: "var(--gray)", marginTop: 16 }}>RESPONSE VELOCITY — 7 DAY</div>
-                    <div className="t-barchart">
-                      {[24, 48, 32, 56, 41, 71, 58].map((h, i) => (
-                        <div key={i} className="t-bar" style={{ height: `${h}%` }} />
-                      ))}
+                  <div style={{ marginTop: 12 }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".09em", textTransform: "uppercase" as const, marginBottom: 10 }}>LEAD ROUTING — AUTOMATION COVERAGE</div>
+                    <div style={{ height: 12, background: "rgba(255,255,255,.08)", border: "1px solid rgba(74,222,128,.2)" }}>
+                      <div style={{ height: "100%", width: "100%", background: "#ff6b35" }} />
+                    </div>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "#ff6b35", textAlign: "right" as const, marginTop: 8 }}>100% AUTOMATED</div>
+                  </div>
+                  <div style={{ marginTop: 32 }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase" as const, color: "var(--gray)", marginBottom: 12 }}>PIPELINE LOG</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8, fontFamily: "var(--mono)", fontSize: 11, color: "var(--gray)" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[L_#482] New lead arrived</span><span style={{ color: "#4ade80" }}>DETECTED</span></div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[L_#482] Personalized email sent</span><span style={{ color: "#4ade80" }}>SENT</span></div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[L_#482] Calendly link engaged</span><span style={{ color: "#fbbf24" }}>WAITING</span></div>
                     </div>
                   </div>
                   <div className="t-stats-row">
@@ -173,13 +186,19 @@ export default function Home() {
                 </div>
                 <h2 className="demo-h2">LEAD RESPONSE<br /><span>ACCELERATOR</span></h2>
                 <p className="demo-sub">For service businesses losing deals to slow follow-up.</p>
-                <ul className="res-list">
+                <ul className="res-list" style={{ marginBottom: 16 }}>
+                  <div className="res-title" style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--gray)", marginBottom: 12 }}>RESULTS:</div>
                   <li className="res-item"><span className="res-marker">▶</span><span>60-second response times <span className="res-dim">(vs 2+ hours manually)</span></span></li>
-                  <li className="res-item"><span className="res-marker">▶</span><span>30% higher close rates across clients</span></li>
-                  <li className="res-item"><span className="res-marker">▶</span><span>Zero leads fall through the cracks</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>30% higher close rates <span className="res-dim">(proven industry data)</span></span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Zero leads fall through cracks</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Manager visibility without micromanaging</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>System runs 24/7 automatically</span></li>
                 </ul>
+                <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".1em", textTransform: "uppercase" }}>
+                  Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> You own it forever
+                </div>
                 <div className="demo-btns">
-                  <button className="btn btn-ghost" onClick={() => console.log("demo: lead response")}>VIEW DEMO</button>
+                  <button className="btn btn-ghost" onClick={() => setIsVideoOpen(true)}>VIEW DEMO</button>
                   <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
                 </div>
               </div>
@@ -199,11 +218,18 @@ export default function Home() {
                 </div>
                 <h2 className="demo-h2">E-COMMERCE<br /><span>ORDER AUTOMATION</span></h2>
                 <p className="demo-sub">For online stores drowning in manual work.</p>
-                <ul className="res-list">
-                  <li className="res-item"><span className="res-marker">▶</span><span>20+ hours/week saved on manual tasks</span></li>
-                  <li className="res-item"><span className="res-marker">▶</span><span>Real-time inventory tracking across all channels</span></li>
-                  <li className="res-item"><span className="res-marker">▶</span><span>$30K–$60K/year <span className="res-dim">in labor costs eliminated</span></span></li>
+                <ul className="res-list" style={{ marginBottom: 16 }}>
+                  <div className="res-title" style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--gray)", marginBottom: 12 }}>RESULTS:</div>
+                  <li className="res-item"><span className="res-marker">▶</span><span>20+ hours/week saved on data entry</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>$30K-$60K/year in labor costs eliminated</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Real-time inventory tracking <span className="res-dim">(prevents overselling)</span></span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Instant order confirmations <span className="res-dim">(better CX)</span></span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>High-value orders ($500+) flagged for VIP treatment</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Complete audit trail for reporting</span></li>
                 </ul>
+                <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".1em", textTransform: "uppercase" }}>
+                  Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> Shopify, WooCommerce, any platform
+                </div>
                 <div className="demo-btns">
                   <button className="btn btn-ghost" onClick={() => console.log("demo: ecommerce")}>VIEW DEMO</button>
                   <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
@@ -248,6 +274,14 @@ export default function Home() {
                       <div style={{ height: "100%", width: "94%", background: "var(--orange)" }} />
                     </div>
                     <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--orange)", textAlign: "right" as const, marginTop: 8 }}>94% IN SYNC</div>
+                  </div>
+                  <div style={{ marginTop: 32 }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase" as const, color: "var(--gray)", marginBottom: 12 }}>SYSTEM LOG</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8, fontFamily: "var(--mono)", fontSize: 11, color: "var(--gray)" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[14:02:41] Shopify webhook received</span><span style={{ color: "#4ade80" }}>OK</span></div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[14:02:45] Inventory adjusted (-3)</span><span style={{ color: "#4ade80" }}>OK</span></div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[14:03:12] CRM contact synced</span><span style={{ color: "#4ade80" }}>OK</span></div>
+                    </div>
                   </div>
                   <div className="t-stats-row">
                     <div className="t-stat-box"><div className="t-stat-n">$47K</div><div className="t-stat-l">Saved/year</div></div>
@@ -302,6 +336,14 @@ export default function Home() {
                     </div>
                     <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "#ff6b35", textAlign: "right" as const, marginTop: 8 }}>96% ACCURACY</div>
                   </div>
+                  <div style={{ marginTop: 32 }}>
+                    <div style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase" as const, color: "var(--gray)", marginBottom: 12 }}>AI PROCESSING LOG</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8, fontFamily: "var(--mono)", fontSize: 11, color: "var(--gray)" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[REQ_#892] Extracting intent...</span><span style={{ color: "#4ade80" }}>DONE</span></div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[REQ_#892] Sentiment analysis</span><span style={{ color: "#fbbf24" }}>FRUSTRATED</span></div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}><span>[REQ_#892] Routing to Tier 2</span><span style={{ color: "#ff6b35" }}>ROUTED</span></div>
+                    </div>
+                  </div>
                   <div className="t-stats-row">
                     <div className="t-stat-box"><div className="t-stat-n">70%</div><div className="t-stat-l">Faster resp.</div></div>
                     <div className="t-stat-box"><div className="t-stat-n">-40%</div><div className="t-stat-l">Workload</div></div>
@@ -318,11 +360,18 @@ export default function Home() {
                 </div>
                 <h2 className="demo-h2">AI SUPPORT<br /><span>TRIAGE</span></h2>
                 <p className="demo-sub">For support teams overwhelmed by ticket volume.</p>
-                <ul className="res-list">
-                  <li className="res-item"><span className="res-marker">▶</span><span>70% faster response times</span></li>
-                  <li className="res-item"><span className="res-marker">▶</span><span>40% reduction in support workload</span></li>
-                  <li className="res-item"><span className="res-marker">▶</span><span>Auto-resolve 30% of common issues</span></li>
+                <ul className="res-list" style={{ marginBottom: 16 }}>
+                  <div className="res-title" style={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--gray)", marginBottom: 12 }}>RESULTS:</div>
+                  <li className="res-item"><span className="res-marker">▶</span><span>70% faster response times on urgent issues</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>30-40% of tickets auto-resolved instantly</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Support team gets 40% of their time back</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>AI categorizes by urgency, department, sentiment</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Complete ticket analytics and reporting</span></li>
+                  <li className="res-item"><span className="res-marker">▶</span><span>Pennies per ticket in AI costs</span></li>
                 </ul>
+                <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".1em", textTransform: "uppercase" }}>
+                  Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> Works with any support platform
+                </div>
                 <div className="demo-btns">
                   <button className="btn btn-ghost" onClick={() => console.log("demo: support triage")}>VIEW DEMO</button>
                   <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
@@ -558,6 +607,30 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── OVERLAY MODAL: DEMO VIDEO ─── */}
+      {isVideoOpen && (
+        <div className="about-modal-backdrop" onClick={() => setIsVideoOpen(false)}>
+          <div className="about-modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: 900, width: "95%", overflow: "hidden" }}>
+            <div className="about-modal-header">
+              <div className="about-eyebrow">{"DEMO_VIDEO"}</div>
+              <button className="about-close" onClick={() => setIsVideoOpen(false)}>✕</button>
+            </div>
+            <div className="about-modal-body" style={{ padding: 0 }}>
+              <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden", backgroundColor: "#000", width: "100%", flex: 1 }}>
+                <iframe
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+                  src="https://www.youtube.com/embed/OdfjHuAQUs4?autoplay=1"
+                  title="Lead Response Accelerator Demo"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           </div>
