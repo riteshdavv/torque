@@ -1471,7 +1471,8 @@ footer {
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: .14em;
-  color: var(--gray);
+  font-weight: 600;
+  color: var(--darkgray);
 }
 
 .about-close {

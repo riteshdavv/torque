@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { WorkflowDiagram } from "./components/WorkflowDiagram";
 import { MetricsCard } from "./components/MetricsCard";
@@ -10,6 +10,19 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 export default function Home() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState("");
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
+  const [currentPdfUrl, setCurrentPdfUrl] = useState("");
+  const [pdfZoom, setPdfZoom] = useState(1);
+  const pdfContainerRef = useRef<HTMLDivElement>(null);
+
+  const closePdfModal = () => {
+    setIsPdfOpen(false);
+    setPdfZoom(1);
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => { });
+    }
+  };
 
   useEffect(() => {
     /* scroll reveal */
@@ -197,9 +210,21 @@ export default function Home() {
                 <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".1em", textTransform: "uppercase" }}>
                   Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> You own it forever
                 </div>
-                <div className="demo-btns">
-                  <button className="btn btn-ghost" onClick={() => setIsVideoOpen(true)}>VIEW DEMO</button>
-                  <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
+                <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/NohV9YGgYAM"); setIsVideoOpen(true); }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                      VIEW DEMO VIDEO
+                    </button>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentPdfUrl("/slides/Lead%20Response%20Accelerator.pdf"); setIsPdfOpen(true); }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                      EXPLAINER SLIDES
+                    </button>
+                  </div>
+                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    BOOK A CALL FOR THIS →
+                  </button>
                 </div>
               </div>
             </div>
@@ -230,9 +255,21 @@ export default function Home() {
                 <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".1em", textTransform: "uppercase" }}>
                   Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> Shopify, WooCommerce, any platform
                 </div>
-                <div className="demo-btns">
-                  <button className="btn btn-ghost" onClick={() => console.log("demo: ecommerce")}>VIEW DEMO</button>
-                  <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
+                <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/l5idrOtqs5M"); setIsVideoOpen(true); }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                      VIEW DEMO VIDEO
+                    </button>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentPdfUrl("/slides/E-commerce%20Order%20Automation.pdf"); setIsPdfOpen(true); }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                      EXPLAINER SLIDES
+                    </button>
+                  </div>
+                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    BOOK A CALL FOR THIS →
+                  </button>
                 </div>
               </div>
 
@@ -372,9 +409,21 @@ export default function Home() {
                 <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 10, color: "var(--gray)", letterSpacing: ".1em", textTransform: "uppercase" }}>
                   Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> Works with any support platform
                 </div>
-                <div className="demo-btns">
-                  <button className="btn btn-ghost" onClick={() => console.log("demo: support triage")}>VIEW DEMO</button>
-                  <button className="btn btn-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
+                <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/vfJ-5YPhTro"); setIsVideoOpen(true); }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                      VIEW DEMO VIDEO
+                    </button>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentPdfUrl("/slides/AI%20Support%20Triage.pdf"); setIsPdfOpen(true); }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                      EXPLAINER SLIDES
+                    </button>
+                  </div>
+                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    BOOK A CALL FOR THIS →
+                  </button>
                 </div>
               </div>
             </div>
@@ -591,7 +640,7 @@ export default function Home() {
                 {/* ── SECTION 2: FOUNDER ── */}
                 <div>
                   <div className="about-name" style={{ borderBottom: "none", paddingBottom: 0, marginBottom: 12 }}>
-                    RITESH SINGH <span className="about-title">· FOUNDER & GSOC '25 CONTRIBUTOR</span>
+                    RITESH SINGH <span className="about-title">· FOUNDER & GSOC &apos;25 CONTRIBUTOR</span>
                   </div>
                   <p className="about-desc" style={{ fontSize: 14 }}>
                     Developed to bridge the gap between legacy systems and next-generation AI agents, powering seamless, automated workflows at scale.
@@ -616,21 +665,63 @@ export default function Home() {
       {/* ─── OVERLAY MODAL: DEMO VIDEO ─── */}
       {isVideoOpen && (
         <div className="about-modal-backdrop" onClick={() => setIsVideoOpen(false)}>
-          <div className="about-modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: 900, width: "95%", overflow: "hidden" }}>
-            <div className="about-modal-header">
+          <div className="about-modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: 1000, width: "95%", overflow: "hidden" }}>
+            <div className="about-modal-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div className="about-eyebrow">{"DEMO_VIDEO"}</div>
-              <button className="about-close" onClick={() => setIsVideoOpen(false)}>✕</button>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <div style={{ fontSize: "13px", color: "var(--darkgray)", textTransform: "none", letterSpacing: "normal" }}>
+                  <span style={{ fontWeight: "bold", color: "var(--orange)" }}>Disclaimer:</span> The speed of the automation has been slowed down in the editing for demonstration purposes.
+                </div>
+                <button className="about-close" onClick={() => setIsVideoOpen(false)}>✕</button>
+              </div>
             </div>
             <div className="about-modal-body" style={{ padding: 0 }}>
               <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden", backgroundColor: "#000", width: "100%", flex: 1 }}>
                 <iframe
                   style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
-                  src="https://www.youtube.com/embed/OdfjHuAQUs4?autoplay=1"
-                  title="Lead Response Accelerator Demo"
+                  src={`${currentVideoUrl}?autoplay=1`}
+                  title="Demo Video"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── OVERLAY MODAL: EXPLAINER SLIDES ─── */}
+      {isPdfOpen && (
+        <div className="about-modal-backdrop" onClick={closePdfModal}>
+          <div className="about-modal-content" ref={pdfContainerRef} onClick={e => e.stopPropagation()} style={{ maxWidth: 1000, width: "95%", height: "85vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+            <div className="about-modal-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div className="about-eyebrow">{"EXPLAINER_SLIDES"}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--black)", borderRadius: "4px", overflow: "hidden", backgroundColor: "var(--cream)" }}>
+                  <button onClick={() => setPdfZoom(z => Math.max(z - 0.25, 0.5))} style={{ padding: "4px 8px", background: "transparent", border: "none", borderRight: "1px solid var(--black)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: "14px" }}>-</button>
+                  <div style={{ padding: "0 8px", fontFamily: "var(--mono)", fontSize: "11px", minWidth: "48px", textAlign: "center" }}>{Math.round(pdfZoom * 100)}%</div>
+                  <button onClick={() => setPdfZoom(z => Math.min(z + 0.25, 3))} style={{ padding: "4px 8px", background: "transparent", border: "none", borderLeft: "1px solid var(--black)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: "14px" }}>+</button>
+                </div>
+                <button title="Full Screen" onClick={() => {
+                  if (!document.fullscreenElement) {
+                    pdfContainerRef.current?.requestFullscreen().catch(err => console.error(err));
+                  } else {
+                    document.exitFullscreen();
+                  }
+                }} style={{ padding: "6px", background: "var(--cream)", border: "1px solid var(--black)", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                </button>
+                <button className="about-close" onClick={closePdfModal}>✕</button>
+              </div>
+            </div>
+            <div className="about-modal-body" style={{ padding: 0, flex: 1, overflow: "auto", position: "relative", backgroundColor: "#e0e0e0" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, width: `${pdfZoom * 100}%`, height: `${pdfZoom * 100}%`, minHeight: "100%", transformOrigin: "top left" }}>
+                <iframe
+                  src={`${currentPdfUrl}#toolbar=0&view=FitH`}
+                  style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+                  title="Explainer Slides"
+                />
               </div>
             </div>
           </div>
