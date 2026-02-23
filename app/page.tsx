@@ -11,11 +11,37 @@ export default function Home() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [currentVideoUrl, setCurrentVideoUrl] = useState("");
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [currentPdfUrl, setCurrentPdfUrl] = useState("");
+  const [isPdfLoading, setIsPdfLoading] = useState(true);
   const [pdfZoom, setPdfZoom] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
+
+  const trackEvent = (eventName: string, props?: Record<string, string>) => {
+    if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag('event', eventName, props);
+    }
+  };
+
+  const openVideo = (demoName: string, url: string) => {
+    setCurrentVideoUrl(url);
+    setIsVideoLoading(true);
+    setIsVideoOpen(true);
+    trackEvent("Demo Viewed", { demo: demoName, type: "video" });
+    // Failsafe in case iframe onLoad doesn't fire correctly
+    setTimeout(() => setIsVideoLoading(false), 3000);
+  };
+
+  const openPdf = (demoName: string, url: string) => {
+    setCurrentPdfUrl(url);
+    setIsPdfLoading(true);
+    setIsPdfOpen(true);
+    trackEvent("Demo Viewed", { demo: demoName, type: "slides" });
+    // Failsafe in case iframe onLoad doesn't fire correctly
+    setTimeout(() => setIsPdfLoading(false), 3000);
+  };
 
   const closePdfModal = () => {
     setIsPdfOpen(false);
@@ -63,7 +89,7 @@ export default function Home() {
             <a href="#" onClick={(e) => { e.preventDefault(); scrollTo("sec-pricing"); }}>Pricing</a>
           </div>
           <div className="nav-actions">
-            <button className="btn-nav" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
+            <button className="btn-nav" onClick={() => { trackEvent("CTA Clicked", { source: "Nav", button: "Book A Call" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>BOOK A CALL</button>
           </div>
         </div>
       </nav>
@@ -92,10 +118,10 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-ctas rv d3" style={{ gap: "2rem" }}>
-            <button className="btn btn-primary" onClick={() => scrollTo("sec-demos")}>
+            <button className="btn btn-primary" onClick={() => { trackEvent("CTA Clicked", { source: "Hero", button: "See Our Work" }); scrollTo("sec-demos"); }}>
               <span>▶</span> SEE OUR WORK
             </button>
-            <button className="btn btn-ghost" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>BOOK A CALL</button>
+            <button className="btn btn-ghost" onClick={() => { trackEvent("CTA Clicked", { source: "Hero", button: "Book A Call" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>BOOK A CALL</button>
           </div>
         </div>
       </header>
@@ -221,16 +247,16 @@ export default function Home() {
                 </div>
                 <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   <div className="demo-btn-grid">
-                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/NohV9YGgYAM"); setIsVideoOpen(true); }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => openVideo("Lead Response", "https://www.youtube.com/embed/NohV9YGgYAM")}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                       VIEW DEMO VIDEO
                     </button>
-                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentPdfUrl("/slides/Lead%20Response%20Accelerator.pdf"); setIsPdfOpen(true); }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => openPdf("Lead Response", "/slides/Lead%20Response%20Accelerator.pdf")}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                       EXPLAINER SLIDES
                     </button>
                   </div>
-                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => { trackEvent("CTA Clicked", { source: "Demo 1", button: "Book A Call" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     BOOK A CALL FOR THIS →
                   </button>
@@ -266,16 +292,16 @@ export default function Home() {
                 </div>
                 <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
                   <div className="demo-btn-grid">
-                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/l5idrOtqs5M"); setIsVideoOpen(true); }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => openVideo("E-commerce", "https://www.youtube.com/embed/l5idrOtqs5M")}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                       VIEW DEMO VIDEO
                     </button>
-                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentPdfUrl("/slides/E-commerce%20Order%20Automation.pdf"); setIsPdfOpen(true); }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => openPdf("E-commerce", "/slides/E-commerce%20Order%20Automation.pdf")}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                       EXPLAINER SLIDES
                     </button>
                   </div>
-                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => { trackEvent("CTA Clicked", { source: "Demo 2", button: "Book A Call" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     BOOK A CALL FOR THIS →
                   </button>
@@ -420,16 +446,16 @@ export default function Home() {
                 </div>
                 <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
                   <div className="demo-btn-grid">
-                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/vfJ-5YPhTro"); setIsVideoOpen(true); }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => openVideo("Support Triage", "https://www.youtube.com/embed/vfJ-5YPhTro")}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                       VIEW DEMO VIDEO
                     </button>
-                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentPdfUrl("/slides/AI%20Support%20Triage.pdf"); setIsPdfOpen(true); }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => openPdf("Support Triage", "/slides/AI%20Support%20Triage.pdf")}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                       EXPLAINER SLIDES
                     </button>
                   </div>
-                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                  <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => { trackEvent("CTA Clicked", { source: "Demo 3", button: "Book A Call" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     BOOK A CALL FOR THIS →
                   </button>
@@ -502,7 +528,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="price-footer">
-                <button className="btn btn-ghost" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>GET STARTED</button>
+                <button className="btn btn-ghost" style={{ width: "100%", justifyContent: "center" }} onClick={() => { trackEvent("CTA Clicked", { source: "Pricing Starter", button: "Get Started" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>GET STARTED</button>
               </div>
             </div>
 
@@ -546,7 +572,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="price-footer">
-                <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+                <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={() => { trackEvent("CTA Clicked", { source: "Pricing Pro", button: "Start Building" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>
                   <span>▶</span> START BUILDING
                 </button>
               </div>
@@ -595,7 +621,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="price-footer">
-                <button className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }} onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>CONTACT SALES</button>
+                <button className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }} onClick={() => { trackEvent("CTA Clicked", { source: "Pricing Enterprise", button: "Contact Sales" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>CONTACT SALES</button>
               </div>
             </div>
           </div>
@@ -613,10 +639,10 @@ export default function Home() {
             <h2 className="final-h2">AUTOMATE<br />YOUR <span>OPS.</span></h2>
             <p className="final-sub">Torque is the automation layer your business has been missing.<br />AI-driven. Zero bottlenecks. Full operational control.</p>
             <div className="final-btns" style={{ gap: "1rem" }}>
-              <button className="btn btn-final-primary" onClick={() => window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank")}>
+              <button className="btn btn-final-primary" onClick={() => { trackEvent("CTA Clicked", { source: "Footer", button: "Book A Discovery Call" }); window.open("https://calendly.com/torque-zeta/discovery-call-torque", "_blank"); }}>
                 <span>▶</span> BOOK A DISCOVERY CALL
               </button>
-              <button className="btn btn-final-outline" onClick={() => scrollTo("sec-demos")}>
+              <button className="btn btn-final-outline" onClick={() => { trackEvent("CTA Clicked", { source: "Footer", button: "See Our Work" }); scrollTo("sec-demos"); }}>
                 SEE OUR WORK ↑
               </button>
             </div>
@@ -686,13 +712,20 @@ export default function Home() {
             </div>
             <div className="about-modal-body" style={{ padding: 0 }}>
               <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden", backgroundColor: "#000", width: "100%", flex: 1 }}>
+                {isVideoLoading && (
+                  <div className="spinner-container">
+                    <div className="loading-spinner"></div>
+                    <div className="spinner-text">LOADING_VIDEO...</div>
+                  </div>
+                )}
                 <iframe
-                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1 }}
                   src={`${currentVideoUrl}?autoplay=1`}
                   title="Demo Video"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
+                  onLoad={() => setIsVideoLoading(false)}
                 ></iframe>
               </div>
             </div>
@@ -737,11 +770,18 @@ export default function Home() {
               </div>
             </div>
             <div className="about-modal-body" style={{ padding: 0, flex: 1, overflow: "auto", position: "relative", backgroundColor: "#e0e0e0", WebkitOverflowScrolling: "touch" }}>
+              {isPdfLoading && (
+                <div className="spinner-container" style={{ zIndex: 10 }}>
+                  <div className="loading-spinner"></div>
+                  <div className="spinner-text">LOADING_DOCUMENT...</div>
+                </div>
+              )}
               <div style={isMobile ? { width: "100%", height: "100%", minHeight: "100%", overflowX: "auto", overflowY: "auto", WebkitOverflowScrolling: "touch" } : { position: "absolute", top: 0, left: 0, width: `${pdfZoom * 100}%`, height: `${pdfZoom * 100}%`, minHeight: "100%", transformOrigin: "top left" }}>
                 <iframe
                   src={`${currentPdfUrl}#toolbar=0&view=FitH`}
-                  style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+                  style={{ width: "100%", height: "100%", border: "none", display: "block", position: "relative", zIndex: 1, backgroundColor: "#fff" }}
                   title="Explainer Slides"
+                  onLoad={() => setIsPdfLoading(false)}
                 />
               </div>
             </div>
