@@ -703,7 +703,7 @@ export default function Home() {
       {/* ─── OVERLAY MODAL: EXPLAINER SLIDES ─── */}
       {isPdfOpen && (
         <div className="about-modal-backdrop" onClick={closePdfModal}>
-          <div className="about-modal-content" ref={pdfContainerRef} onClick={e => e.stopPropagation()} style={{ maxWidth: 1000, width: "95%", height: "85vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+          <div className="about-modal-content pdf-modal-content" ref={pdfContainerRef} onClick={e => e.stopPropagation()} style={{ maxWidth: 1000, width: "95%", height: "85vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
             <div className="about-modal-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div className="about-eyebrow">{"EXPLAINER_SLIDES"}</div>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -736,8 +736,8 @@ export default function Home() {
                 <button className="about-close" onClick={closePdfModal}>✕</button>
               </div>
             </div>
-            <div className="about-modal-body" style={{ padding: 0, flex: 1, overflow: "auto", position: "relative", backgroundColor: "#e0e0e0" }}>
-              <div style={isMobile ? { width: "100%", height: "100%", minHeight: "100%" } : { position: "absolute", top: 0, left: 0, width: `${pdfZoom * 100}%`, height: `${pdfZoom * 100}%`, minHeight: "100%", transformOrigin: "top left" }}>
+            <div className="about-modal-body" style={{ padding: 0, flex: 1, overflow: "auto", position: "relative", backgroundColor: "#e0e0e0", WebkitOverflowScrolling: "touch" }}>
+              <div style={isMobile ? { width: "100%", height: "100%", minHeight: "100%", overflowX: "auto", overflowY: "auto", WebkitOverflowScrolling: "touch" } : { position: "absolute", top: 0, left: 0, width: `${pdfZoom * 100}%`, height: `${pdfZoom * 100}%`, minHeight: "100%", transformOrigin: "top left" }}>
                 <iframe
                   src={`${currentPdfUrl}#toolbar=0&view=FitH`}
                   style={{ width: "100%", height: "100%", border: "none", display: "block" }}

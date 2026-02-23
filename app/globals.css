@@ -1850,9 +1850,12 @@ footer {
   }
 
   /* PDF modal: full height on mobile */
-  .about-modal-content {
+  .pdf-modal-content {
     height: 90vh !important;
     width: 100% !important;
     max-width: 100% !important;
+    overflow-y: auto !important;
+    /* Allow native scrolling for iOS PDF */
+    -webkit-overflow-scrolling: touch;
   }
 }
