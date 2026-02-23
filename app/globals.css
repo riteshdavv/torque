@@ -276,6 +276,12 @@ nav {
   margin-top: 32px;
 }
 
+.demo-btn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
 
 /* ─── HERO ─── */
 #hero {
@@ -1467,6 +1473,25 @@ footer {
   flex-shrink: 0;
 }
 
+/* Video modal header: disclaimer + close sit on the right */
+.video-modal-header {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.video-modal-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.video-disclaimer {
+  font-size: 13px;
+  color: var(--darkgray);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .about-eyebrow {
   font-family: var(--mono);
   font-size: 11px;
@@ -1793,5 +1818,41 @@ footer {
 
   .pricing-h2 {
     font-size: clamp(32px, 8vw, 68px);
+  }
+
+  /* Stack the two demo action buttons vertically on small screens */
+  .demo-btn-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ─── Mobile modal fixes ─── */
+  .about-modal-header {
+    padding: 14px 16px;
+  }
+
+  /* Video modal: stack disclaimer below the eyebrow/close row */
+  .video-modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .video-modal-header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .video-disclaimer {
+    font-size: 11px;
+    line-height: 1.5;
+    order: 1;
+    /* disclaimer goes below the eyebrow line */
+  }
+
+  /* PDF modal: full height on mobile */
+  .about-modal-content {
+    height: 90vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }

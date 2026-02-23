@@ -14,6 +14,7 @@ export default function Home() {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [currentPdfUrl, setCurrentPdfUrl] = useState("");
   const [pdfZoom, setPdfZoom] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
 
   const closePdfModal = () => {
@@ -33,7 +34,15 @@ export default function Home() {
     );
     els.forEach((el) => io.observe(el));
 
-    return () => io.disconnect();
+    /* mobile detection */
+    const checkMobile = () => setIsMobile(window.innerWidth <= 600);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   const scrollTo = (id: string) =>
@@ -211,7 +220,7 @@ export default function Home() {
                   Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> You own it forever
                 </div>
                 <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="demo-btn-grid">
                     <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/NohV9YGgYAM"); setIsVideoOpen(true); }}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                       VIEW DEMO VIDEO
@@ -256,7 +265,7 @@ export default function Home() {
                   Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> Shopify, WooCommerce, any platform
                 </div>
                 <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="demo-btn-grid">
                     <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/l5idrOtqs5M"); setIsVideoOpen(true); }}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                       VIEW DEMO VIDEO
@@ -410,7 +419,7 @@ export default function Home() {
                   Built on n8n <span style={{ color: "var(--orange)", margin: "0 4px" }}>|</span> Works with any support platform
                 </div>
                 <div className="demo-btns" style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="demo-btn-grid">
                     <button className="btn btn-ghost" style={{ justifyContent: "center", padding: "13px 8px", fontSize: "11px" }} onClick={() => { setCurrentVideoUrl("https://www.youtube.com/embed/vfJ-5YPhTro"); setIsVideoOpen(true); }}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                       VIEW DEMO VIDEO
@@ -666,10 +675,10 @@ export default function Home() {
       {isVideoOpen && (
         <div className="about-modal-backdrop" onClick={() => setIsVideoOpen(false)}>
           <div className="about-modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: 1000, width: "95%", overflow: "hidden" }}>
-            <div className="about-modal-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="about-modal-header video-modal-header">
               <div className="about-eyebrow">{"DEMO_VIDEO"}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                <div style={{ fontSize: "13px", color: "var(--darkgray)", textTransform: "none", letterSpacing: "normal" }}>
+              <div className="video-modal-header-right">
+                <div className="video-disclaimer">
                   <span style={{ fontWeight: "bold", color: "var(--orange)" }}>Disclaimer:</span> The speed of the automation has been slowed down in the editing for demonstration purposes.
                 </div>
                 <button className="about-close" onClick={() => setIsVideoOpen(false)}>✕</button>
@@ -698,25 +707,37 @@ export default function Home() {
             <div className="about-modal-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div className="about-eyebrow">{"EXPLAINER_SLIDES"}</div>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--black)", borderRadius: "4px", overflow: "hidden", backgroundColor: "var(--cream)" }}>
-                  <button onClick={() => setPdfZoom(z => Math.max(z - 0.25, 0.5))} style={{ padding: "4px 8px", background: "transparent", border: "none", borderRight: "1px solid var(--black)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: "14px" }}>-</button>
-                  <div style={{ padding: "0 8px", fontFamily: "var(--mono)", fontSize: "11px", minWidth: "48px", textAlign: "center" }}>{Math.round(pdfZoom * 100)}%</div>
-                  <button onClick={() => setPdfZoom(z => Math.min(z + 0.25, 3))} style={{ padding: "4px 8px", background: "transparent", border: "none", borderLeft: "1px solid var(--black)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: "14px" }}>+</button>
-                </div>
-                <button title="Full Screen" onClick={() => {
-                  if (!document.fullscreenElement) {
-                    pdfContainerRef.current?.requestFullscreen().catch(err => console.error(err));
-                  } else {
-                    document.exitFullscreen();
-                  }
-                }} style={{ padding: "6px", background: "var(--cream)", border: "1px solid var(--black)", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                {!isMobile && (
+                  <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--black)", borderRadius: "4px", overflow: "hidden", backgroundColor: "var(--cream)" }}>
+                    <button onClick={() => setPdfZoom(z => Math.max(z - 0.25, 0.5))} style={{ padding: "4px 8px", background: "transparent", border: "none", borderRight: "1px solid var(--black)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: "14px" }}>-</button>
+                    <div style={{ padding: "0 8px", fontFamily: "var(--mono)", fontSize: "11px", minWidth: "48px", textAlign: "center" }}>{Math.round(pdfZoom * 100)}%</div>
+                    <button onClick={() => setPdfZoom(z => Math.min(z + 0.25, 3))} style={{ padding: "4px 8px", background: "transparent", border: "none", borderLeft: "1px solid var(--black)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: "14px" }}>+</button>
+                  </div>
+                )}
+                <button
+                  title={isMobile ? "Open in new tab" : "Full Screen"}
+                  onClick={() => {
+                    if (isMobile) {
+                      window.open(currentPdfUrl, "_blank");
+                    } else if (!document.fullscreenElement) {
+                      pdfContainerRef.current?.requestFullscreen().catch(err => console.error(err));
+                    } else {
+                      document.exitFullscreen();
+                    }
+                  }}
+                  style={{ padding: "6px", background: "var(--cream)", border: "1px solid var(--black)", borderRadius: "4px", cursor: "pointer", display: "flex", alignItems: "center" }}
+                >
+                  {isMobile ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  ) : (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                  )}
                 </button>
                 <button className="about-close" onClick={closePdfModal}>✕</button>
               </div>
             </div>
             <div className="about-modal-body" style={{ padding: 0, flex: 1, overflow: "auto", position: "relative", backgroundColor: "#e0e0e0" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, width: `${pdfZoom * 100}%`, height: `${pdfZoom * 100}%`, minHeight: "100%", transformOrigin: "top left" }}>
+              <div style={isMobile ? { width: "100%", height: "100%", minHeight: "100%" } : { position: "absolute", top: 0, left: 0, width: `${pdfZoom * 100}%`, height: `${pdfZoom * 100}%`, minHeight: "100%", transformOrigin: "top left" }}>
                 <iframe
                   src={`${currentPdfUrl}#toolbar=0&view=FitH`}
                   style={{ width: "100%", height: "100%", border: "none", display: "block" }}
