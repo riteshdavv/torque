@@ -625,8 +625,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          <div className="price-note rv d2">{"ALL PLANS BILLED MONTHLY · CANCEL ANYTIME · NO VENDOR LOCK-IN"}</div>
         </div>
       </section>
 
